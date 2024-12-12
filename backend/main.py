@@ -10,9 +10,11 @@
 # See the Mulan PSL v2 for more details.
 
 import logging
+import os
 from datetime import datetime
 from typing import Dict, List, Optional
 
+import pytz
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -36,8 +38,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 从环境变量获取 Core API 配置
+OBGYM_CORE_HOST = os.getenv("OBGYM_CORE_HOST", "localhost")
+OBGYM_CORE_PORT = int(os.getenv("OBGYM_CORE_PORT", "16999"))
+
 # 初始化 API 客户端
-api = OBGymAPI()
+api = OBGymAPI(host=OBGYM_CORE_HOST, port=OBGYM_CORE_PORT)
+
+CHINA_TIMEZONE = pytz.timezone("Asia/Shanghai")
 
 
 @app.exception_handler(RequestValidationError)
@@ -139,8 +147,8 @@ async def get_area(
         areas = api.get_area(facility, date, account)
 
         # 如果是当天的预约,过滤掉已经过期的时段
-        if date == datetime.now().strftime("%Y-%m-%d"):
-            current_time = datetime.now().time()
+        if date == datetime.now(CHINA_TIMEZONE).strftime("%Y-%m-%d"):
+            current_time = datetime.now(CHINA_TIMEZONE).time()
             filtered_areas = []
 
             for area_group in areas:
@@ -260,4 +268,4 @@ async def remove_job(job_id: str):
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=16998)

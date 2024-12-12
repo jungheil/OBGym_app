@@ -1,0 +1,4 @@
+dataclasses-json==0.6.7
+fastapi==0.115.6
+pytz==2024.2
+uvicorn==0.32.1

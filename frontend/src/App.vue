@@ -7,13 +7,21 @@
         <span>OBGym 预约系统</span>
       </div>
       <div class="nav-menu">
-        <div class="nav-item" :class="{ active: currentNav === 'booking' }" @click="currentNav = 'booking'">
+        <div
+          class="nav-item"
+          :class="{ active: currentNav === 'booking' }"
+          @click="currentNav = 'booking'"
+        >
           <el-icon>
             <Calendar />
           </el-icon>
           <span>预约</span>
         </div>
-        <div class="nav-item" :class="{ active: currentNav === 'jobs' }" @click="currentNav = 'jobs'">
+        <div
+          class="nav-item"
+          :class="{ active: currentNav === 'jobs' }"
+          @click="currentNav = 'jobs'"
+        >
           <el-icon>
             <List />
           </el-icon>
@@ -48,11 +56,17 @@
             </div>
           </div>
           <div class="progress-steps">
-            <div v-for="(step, index) in steps" :key="index" class="progress-step" :class="{
-              completed: index < currentStep,
-              current: index === currentStep,
-              clickable: index < currentStep,
-            }" @click="index < currentStep && handleStepClick(index)">
+            <div
+              v-for="(step, index) in steps"
+              :key="index"
+              class="progress-step"
+              :class="{
+                completed: index < currentStep,
+                current: index === currentStep,
+                clickable: index < currentStep,
+              }"
+              @click="index < currentStep && handleStepClick(index)"
+            >
               <div class="step-circle">
                 <el-icon v-if="index < currentStep"><Select /></el-icon>
                 <el-icon v-else-if="index === currentStep">
@@ -77,20 +91,21 @@
                 <h2>选择用户</h2>
                 <div class="header-actions">
                   <el-button type="primary" @click="handleAddAccount">
-                    <el-icon>
-                      <Plus />
-                    </el-icon>添加用户
+                    <el-icon> <Plus /> </el-icon>添加用户
                   </el-button>
                   <el-button @click="refreshAccounts">
-                    <el-icon>
-                      <Refresh />
-                    </el-icon>刷新
+                    <el-icon> <Refresh /> </el-icon>刷新
                   </el-button>
                 </div>
               </div>
               <div class="accounts-grid">
-                <div v-for="account in sortedAccounts" :key="account.account" class="account-card"
-                  :class="{ disabled: !account.available }" @click="account.available && selectAccount(account)">
+                <div
+                  v-for="account in sortedAccounts"
+                  :key="account.account"
+                  class="account-card"
+                  :class="{ disabled: !account.available }"
+                  @click="account.available && selectAccount(account)"
+                >
                   <div class="account-icon">
                     <el-icon>
                       <User />
@@ -98,20 +113,29 @@
                   </div>
                   <div class="account-info">
                     <span class="account-name">{{ account.account }}</span>
-                    <span class="account-status" :class="{ available: account.available }">
+                    <span
+                      class="account-status"
+                      :class="{ available: account.available }"
+                    >
                       {{ account.available ? "可用" : "不可用" }}
                     </span>
                   </div>
                   <div class="account-actions">
                     <el-tooltip content="刷新账户" placement="top">
-                      <div class="action-button refresh" @click.stop="handleRenewAccount(account)">
+                      <div
+                        class="action-button refresh"
+                        @click.stop="handleRenewAccount(account)"
+                      >
                         <el-icon>
                           <Refresh />
                         </el-icon>
                       </div>
                     </el-tooltip>
                     <el-tooltip content="删除账户" placement="top">
-                      <div class="action-button delete" @click.stop="handleDeleteAccount(account)">
+                      <div
+                        class="action-button delete"
+                        @click.stop="handleDeleteAccount(account)"
+                      >
                         <el-icon>
                           <Delete />
                         </el-icon>
@@ -123,13 +147,21 @@
             </div>
 
             <!-- 第二步：选择校区 -->
-            <div v-else-if="currentStep === 1" key="campus" class="card-content">
+            <div
+              v-else-if="currentStep === 1"
+              key="campus"
+              class="card-content"
+            >
               <div class="card-header">
                 <h2>选择校区</h2>
               </div>
               <div class="campus-grid">
-                <div v-for="campus in sortedCampuses" :key="campus.code" class="campus-card"
-                  @click="selectCampus(campus)">
+                <div
+                  v-for="campus in sortedCampuses"
+                  :key="campus.code"
+                  class="campus-card"
+                  @click="selectCampus(campus)"
+                >
                   <div class="campus-icon">
                     <el-icon>
                       <School />
@@ -141,13 +173,21 @@
             </div>
 
             <!-- 第三步：选择场馆 -->
-            <div v-else-if="currentStep === 2" key="facility" class="card-content">
+            <div
+              v-else-if="currentStep === 2"
+              key="facility"
+              class="card-content"
+            >
               <div class="card-header">
                 <h2>选择场馆</h2>
               </div>
               <div class="facility-grid">
-                <div v-for="facility in sortedFacilities" :key="facility.serviceid" class="facility-card"
-                  @click="selectFacility(facility)">
+                <div
+                  v-for="facility in sortedFacilities"
+                  :key="facility.serviceid"
+                  class="facility-card"
+                  @click="selectFacility(facility)"
+                >
                   <div class="facility-icon">
                     <el-icon>
                       <OfficeBuilding />
@@ -164,18 +204,28 @@
                 <h2>选择区域</h2>
                 <div class="header-actions">
                   <div class="date-selector">
-                    <el-date-picker v-model="selectedDate" type="date" :disabled-date="disabledDate" format="YYYY-MM-DD"
-                      value-format="YYYY-MM-DD" placeholder="选择日期" :clearable="false" @change="handleDateChange" />
+                    <el-date-picker
+                      v-model="selectedDate"
+                      type="date"
+                      :disabled-date="disabledDate"
+                      format="YYYY-MM-DD"
+                      value-format="YYYY-MM-DD"
+                      placeholder="选择日期"
+                      :clearable="false"
+                      @change="handleDateChange"
+                    />
                   </div>
                   <el-button @click="refreshArea">
-                    <el-icon>
-                      <Refresh />
-                    </el-icon>刷新
+                    <el-icon> <Refresh /> </el-icon>刷新
                   </el-button>
                 </div>
               </div>
               <div class="areas-container">
-                <div v-for="group in sortedAreas" :key="group.timeno" class="time-group">
+                <div
+                  v-for="group in sortedAreas"
+                  :key="group.timeno"
+                  class="time-group"
+                >
                   <div class="time-header">
                     <el-icon>
                       <Timer />
@@ -183,7 +233,12 @@
                     <span>时段 {{ group.timeno }}</span>
                   </div>
                   <div class="area-grid">
-                    <div v-for="area in group.areas" :key="area.areaid" class="area-card" @click="showBookDialog(area)">
+                    <div
+                      v-for="area in group.areas"
+                      :key="area.areaid"
+                      class="area-card"
+                      @click="showBookDialog(area)"
+                    >
                       <div class="area-icon">
                         <el-icon>
                           <Location />
@@ -206,17 +261,23 @@
             <h2>任务列表</h2>
             <div class="header-actions">
               <el-button @click="refreshJobs">
-                <el-icon>
-                  <Refresh />
-                </el-icon>刷新
+                <el-icon> <Refresh /> </el-icon>刷新
               </el-button>
             </div>
           </div>
           <div class="jobs-list">
             <div v-if="jobs.length === 0" class="empty-jobs">暂无任务</div>
             <div v-else class="job-items">
-              <div v-for="job in paginatedJobs" :key="job.job_id" class="job-card" @click="showJobInfo(job.job_id)">
-                <div class="job-icon" :class="{ 'main-job': job.job_level === 0 }">
+              <div
+                v-for="job in paginatedJobs"
+                :key="job.job_id"
+                class="job-card"
+                @click="showJobInfo(job.job_id)"
+              >
+                <div
+                  class="job-icon"
+                  :class="{ 'main-job': job.job_level === 0 }"
+                >
                   <el-icon>
                     <Timer />
                   </el-icon>
@@ -224,7 +285,11 @@
                 <div class="job-info">
                   <div class="job-header">
                     <div class="job-description">
-                      <el-tag size="small" class="job-type-tag" :type="getJobTypeTagType(job.job_level)">
+                      <el-tag
+                        size="small"
+                        class="job-type-tag"
+                        :type="getJobTypeTagType(job.job_level)"
+                      >
                         {{ getJobTypeText(job.job_type) }}
                       </el-tag>
                       <span class="description-text">{{
@@ -246,8 +311,13 @@
 
             <!-- 分页器 -->
             <div class="pagination-container">
-              <el-pagination v-model:current-page="currentPage" :page-size="pageSize" :total="jobs.length"
-                layout="prev, pager, next" @current-change="handlePageChange" />
+              <el-pagination
+                v-model:current-page="currentPage"
+                :page-size="pageSize"
+                :total="jobs.length"
+                layout="prev, pager, next"
+                @current-change="handlePageChange"
+              />
             </div>
           </div>
         </div>
@@ -255,15 +325,35 @@
     </div>
 
     <!-- 添加用户对话框 -->
-    <el-dialog v-model="addAccountDialogVisible" title="添加用户" width="400px" :close-on-click-modal="false"
-      class="custom-dialog" @open="handleDialogOpen">
-      <el-form :model="newAccount" label-width="80px" @submit.prevent="confirmAddAccount">
+    <el-dialog
+      v-model="addAccountDialogVisible"
+      title="添加用户"
+      width="400px"
+      :close-on-click-modal="false"
+      class="custom-dialog"
+      @open="handleDialogOpen"
+    >
+      <el-form
+        :model="newAccount"
+        label-width="80px"
+        @submit.prevent="confirmAddAccount"
+      >
         <el-form-item label="账号">
-          <el-input v-model="newAccount.account" placeholder="请输入账号" ref="accountInput" @keyup.enter="focusPassword" />
+          <el-input
+            v-model="newAccount.account"
+            placeholder="请输入账号"
+            ref="accountInput"
+            @keyup.enter="focusPassword"
+          />
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="newAccount.password" type="password" placeholder="请输入密码" ref="passwordInput"
-            @keyup.enter="confirmAddAccount" />
+          <el-input
+            v-model="newAccount.password"
+            type="password"
+            placeholder="请输入密码"
+            ref="passwordInput"
+            @keyup.enter="confirmAddAccount"
+          />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -275,8 +365,14 @@
     </el-dialog>
 
     <!-- 预约弹窗 -->
-    <el-dialog v-model="bookDialogVisible" title="场地预约" width="400px" :close-on-click-modal="false"
-      class="custom-dialog" @keyup.enter="handleBookArea">
+    <el-dialog
+      v-model="bookDialogVisible"
+      title="场地预约"
+      width="400px"
+      :close-on-click-modal="false"
+      class="custom-dialog"
+      @keyup.enter="handleBookArea"
+    >
       <div class="area-info">
         <div class="info-item">
           <span class="label">场地名称：</span>
@@ -300,8 +396,14 @@
     </el-dialog>
 
     <!-- 添加任务详情弹窗 -->
-    <el-dialog v-model="jobInfoDialogVisible" title="任务详情" width="500px" :close-on-click-modal="false"
-      class="custom-dialog" @keyup.enter="jobInfoDialogVisible = false">
+    <el-dialog
+      v-model="jobInfoDialogVisible"
+      title="任务详情"
+      width="500px"
+      :close-on-click-modal="false"
+      class="custom-dialog"
+      @keyup.enter="jobInfoDialogVisible = false"
+    >
       <div v-if="selectedJobInfo" class="job-info-content">
         <div class="info-item">
           <span class="label">任务类型：</span>
@@ -349,8 +451,12 @@
           <h3>执行记录</h3>
           <div class="timeline-container">
             <el-timeline>
-              <el-timeline-item v-for="result in sortedResults" :key="result.created_at"
-                :type="result.success ? 'success' : 'danger'" :timestamp="result.created_at">
+              <el-timeline-item
+                v-for="result in sortedResults"
+                :key="result.created_at"
+                :type="result.success ? 'success' : 'danger'"
+                :timestamp="result.created_at"
+              >
                 <div class="timeline-content">
                   <div class="message">{{ result.message || "执行完成" }}</div>
                   <div v-if="shouldShowData(result)" class="data-info">
@@ -364,7 +470,11 @@
       </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="danger" @click="handleRemoveJob" :disabled="selectedJobInfo?.job_level === 0">
+          <el-button
+            type="danger"
+            @click="handleRemoveJob"
+            :disabled="selectedJobInfo?.job_level === 0"
+          >
             删除任务
           </el-button>
           <el-button @click="jobInfoDialogVisible = false">关闭</el-button>
@@ -568,9 +678,11 @@ const getStepLabel = (index: number) => {
 };
 
 const formatDate = (date: Date): string => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
+  // 转换为中国时区
+  const chinaDate = new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Shanghai' }));
+  const year = chinaDate.getFullYear();
+  const month = String(chinaDate.getMonth() + 1).padStart(2, "0");
+  const day = String(chinaDate.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
@@ -792,15 +904,18 @@ interface JobInfo {
 }
 
 const disabledDate = (time: Date) => {
-  // 获取今天的开始时间（0点0分0秒）
-  const today = new Date();
+  // 转换为中国时区的时间
+  const chinaDate = new Date(time.toLocaleString('en-US', { timeZone: 'Asia/Shanghai' }));
+  
+  // 获取中国时区的今天开始时间（0点0分0秒）
+  const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai' }));
   today.setHours(0, 0, 0, 0);
 
   // 获取30天后的日期作为最大可选日期
-  const maxDate = new Date();
+  const maxDate = new Date(today);
   maxDate.setDate(maxDate.getDate() + 30);
 
-  return time.getTime() < today.getTime() || time.getTime() > maxDate.getTime();
+  return chinaDate.getTime() < today.getTime() || chinaDate.getTime() > maxDate.getTime();
 };
 
 // 修改聚焦密码框的方法
@@ -892,9 +1007,11 @@ const getJobTypeTagType = (level: number) => {
 .logo span {
   font-size: 20px;
   font-weight: bold;
-  background: linear-gradient(45deg,
-      var(--el-color-primary),
-      var(--el-color-success));
+  background: linear-gradient(
+    45deg,
+    var(--el-color-primary),
+    var(--el-color-success)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -1173,7 +1290,6 @@ const getJobTypeTagType = (level: number) => {
 }
 
 @media (max-width: 480px) {
-
   .accounts-grid,
   .campus-grid,
   .facility-grid,
