@@ -154,7 +154,11 @@ async def get_area(
             for area_group in areas:
                 # 假设时段格式为 "08:00-09:00"
                 end_time_str = area_group.timeno.split("-")[1]
-                end_time = datetime.strptime(end_time_str, "%H:%M").time()
+                end_time = (
+                    datetime.strptime(end_time_str, "%H:%M")
+                    .replace(tzinfo=CHINA_TIMEZONE)
+                    .time()
+                )
 
                 if end_time > current_time:
                     filtered_areas.append(area_group)
