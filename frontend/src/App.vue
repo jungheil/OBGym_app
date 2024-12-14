@@ -103,8 +103,7 @@
                   v-for="account in sortedAccounts"
                   :key="account.account"
                   class="account-card"
-                  :class="{ disabled: !account.available }"
-                  @click="account.available && selectAccount(account)"
+                  @click="selectAccount(account)"
                 >
                   <div class="account-icon">
                     <el-icon>
@@ -113,24 +112,8 @@
                   </div>
                   <div class="account-info">
                     <span class="account-name">{{ account.account }}</span>
-                    <span
-                      class="account-status"
-                      :class="{ available: account.available }"
-                    >
-                      {{ account.available ? "可用" : "不可用" }}
-                    </span>
                   </div>
                   <div class="account-actions">
-                    <el-tooltip content="刷新账户" placement="top">
-                      <div
-                        class="action-button refresh"
-                        @click.stop="handleRenewAccount(account)"
-                      >
-                        <el-icon>
-                          <Refresh />
-                        </el-icon>
-                      </div>
-                    </el-tooltip>
                     <el-tooltip content="删除账户" placement="top">
                       <div
                         class="action-button delete"
@@ -552,11 +535,27 @@ const refreshAccounts = async () => {
 
 const selectAccount = async (account: Account) => {
   try {
-    await store.fetchCampus(account.account);
-    currentStep.value = 1;
+    // 先尝试刷新账户状态
+    const response = await fetch(`/api/accounts/${account.account}/renew`, {
+      method: "POST",
+    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    await refreshAccounts(); // 刷新账户列表
+
+    // 只有在账户刷新成功后才获取校区列表
+    try {
+      await store.fetchCampus(account.account);
+      currentStep.value = 1;
+    } catch (error) {
+      ElMessage.error(
+        error instanceof Error ? error.message : "获取校区列表失败"
+      );
+    }
   } catch (error) {
     ElMessage.error(
-      error instanceof Error ? error.message : "获取校区列表失败"
+      error instanceof Error ? error.message : "账户状态更新失败"
     );
   }
 };
@@ -679,7 +678,9 @@ const getStepLabel = (index: number) => {
 
 const formatDate = (date: Date): string => {
   // 转换为中国时区
-  const chinaDate = new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Shanghai' }));
+  const chinaDate = new Date(
+    date.toLocaleString("en-US", { timeZone: "Asia/Shanghai" })
+  );
   const year = chinaDate.getFullYear();
   const month = String(chinaDate.getMonth() + 1).padStart(2, "0");
   const day = String(chinaDate.getDate()).padStart(2, "0");
@@ -905,17 +906,24 @@ interface JobInfo {
 
 const disabledDate = (time: Date) => {
   // 转换为中国时区的时间
-  const chinaDate = new Date(time.toLocaleString('en-US', { timeZone: 'Asia/Shanghai' }));
-  
+  const chinaDate = new Date(
+    time.toLocaleString("en-US", { timeZone: "Asia/Shanghai" })
+  );
+
   // 获取中国时区的今天开始时间（0点0分0秒）
-  const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Shanghai' }));
+  const today = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Asia/Shanghai" })
+  );
   today.setHours(0, 0, 0, 0);
 
   // 获取30天后的日期作为最大可选日期
   const maxDate = new Date(today);
   maxDate.setDate(maxDate.getDate() + 30);
 
-  return chinaDate.getTime() < today.getTime() || chinaDate.getTime() > maxDate.getTime();
+  return (
+    chinaDate.getTime() < today.getTime() ||
+    chinaDate.getTime() > maxDate.getTime()
+  );
 };
 
 // 修改聚焦密码框的方法
