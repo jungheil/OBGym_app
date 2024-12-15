@@ -81,11 +81,6 @@
                       <Plus />
                     </el-icon>添加用户
                   </el-button>
-                  <el-button @click="refreshAccounts">
-                    <el-icon>
-                      <Refresh />
-                    </el-icon>刷新
-                  </el-button>
                 </div>
               </div>
               <div class="accounts-grid">
@@ -155,12 +150,12 @@
                 <div class="header-actions">
                   <div class="date-selector">
                     <el-date-picker v-model="selectedDate" type="date" :disabled-date="disabledDate" format="YYYY-MM-DD"
-                      value-format="YYYY-MM-DD" placeholder="选择日��" :clearable="false" @change="handleDateChange" />
+                      value-format="YYYY-MM-DD" placeholder="选择日期" :clearable="false" @change="handleDateChange" />
                   </div>
                   <el-button @click="refreshArea">
                     <el-icon>
                       <Refresh />
-                    </el-icon>刷新
+                    </el-icon>
                   </el-button>
                 </div>
               </div>
@@ -245,8 +240,8 @@
     </div>
 
     <!-- 添加用户对话框 -->
-    <el-dialog v-model="addAccountDialogVisible" title="添加用户" width="400px" :close-on-click-modal="false"
-      class="custom-dialog" @open="handleDialogOpen">
+    <el-dialog v-model="addAccountDialogVisible" title="添加用户" width="90%" :style="{ maxWidth: '600px' }"
+      :close-on-click-modal="false" class="custom-dialog" @open="handleDialogOpen">
       <el-form :model="newAccount" label-width="80px" @submit.prevent="confirmAddAccount">
         <el-form-item label="账号">
           <el-input v-model="newAccount.account" placeholder="请输入账号" ref="accountInput" @keyup.enter="focusPassword" />
@@ -265,8 +260,8 @@
     </el-dialog>
 
     <!-- 预约弹窗 -->
-    <el-dialog v-model="bookDialogVisible" title="场地预约" width="400px" :close-on-click-modal="false"
-      class="custom-dialog" @keyup.enter="handleBookArea">
+    <el-dialog v-model="bookDialogVisible" title="场地预约" width="90%" :style="{ maxWidth: '600px' }"
+      :close-on-click-modal="false" class="custom-dialog" @keyup.enter="handleBookArea">
       <div class="area-info">
         <div class="info-item">
           <span class="label">场地名称：</span>
@@ -291,8 +286,8 @@
     </el-dialog>
 
     <!-- 添加任务详情弹窗 -->
-    <el-dialog v-model="jobInfoDialogVisible" title="任务详情" width="500px" :close-on-click-modal="false"
-      class="custom-dialog" @keyup.enter="jobInfoDialogVisible = false">
+    <el-dialog v-model="jobInfoDialogVisible" title="任务详情" width="90%" :style="{ maxWidth: '600px' }"
+      :close-on-click-modal="false" class="custom-dialog" @keyup.enter="jobInfoDialogVisible = false">
       <div v-if="selectedJobInfo" class="job-info-content">
         <div class="info-item">
           <span class="label">任务类型：</span>
@@ -409,7 +404,7 @@ const pageSize = ref(10);
 const jobInfoDialogVisible = ref(false);
 const selectedJobInfo = ref<JobInfo | null>(null);
 
-// 修改 ref 的类型定��
+// 修改 ref 的类型定义
 const accountInput = ref<any>(null);
 const passwordInput = ref<any>(null);
 
@@ -753,7 +748,7 @@ const handleRemoveJob = async () => {
   if (!selectedJobInfo.value) return;
 
   try {
-    await ElMessageBox.confirm("确定要删除该任务吗?", "警告", {
+    await ElMessageBox.confirm("确定要删除该任务吗？", "警告", {
       confirmButtonText: "确定",
       cancelButtonText: "取消",
       type: "warning",
@@ -811,7 +806,7 @@ const disabledDate = (time: Date) => {
     time.toLocaleString("en-US", { timeZone: "Asia/Shanghai" })
   );
 
-  // 获取中国时区的今天开始时间（0点0分0秒）
+  // 获取中国时区的今天开始时间（00:00:00）
   const today = new Date(
     new Date().toLocaleString("en-US", { timeZone: "Asia/Shanghai" })
   );
@@ -930,6 +925,8 @@ const handleBookAndPayArea = async () => {
 .app-container {
   min-height: 100vh;
   background-color: #f5f7fa;
+  min-width: 350px;
+  /* 设置最小宽度 */
 }
 
 .navbar {
@@ -1050,6 +1047,9 @@ const handleBookAndPayArea = async () => {
   font-size: 14px;
   color: #909399;
   transition: all 0.3s ease;
+  text-align: center;
+  width: 100%;
+  word-break: break-word;
 }
 
 .progress-step.completed .step-circle {
@@ -1094,9 +1094,10 @@ const handleBookAndPayArea = async () => {
 .facility-grid,
 .area-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
-  padding: 10px;
+  padding: 0;
+  width: 100%;
 }
 
 /* 卡片样式 */
@@ -1104,6 +1105,8 @@ const handleBookAndPayArea = async () => {
 .campus-card,
 .facility-card,
 .area-card {
+  width: 100%;
+  max-width: none;
   background: white;
   border-radius: 8px;
   padding: 20px;
@@ -1114,6 +1117,20 @@ const handleBookAndPayArea = async () => {
   transition: all 0.3s ease;
   border: 1px solid #ebeef5;
   position: relative;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+
+  .account-card,
+  .campus-card,
+  .facility-card,
+  .area-card {
+    width: 90%;
+    /* 在小屏幕上设置为90% */
+    margin: 0 auto;
+    /* 居中显示 */
+  }
 }
 
 .account-card:hover,
@@ -1220,7 +1237,7 @@ const handleBookAndPayArea = async () => {
   .campus-grid,
   .facility-grid,
   .area-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 
   .step-circle {
@@ -1414,6 +1431,10 @@ const handleBookAndPayArea = async () => {
   transition: all 0.3s ease;
   cursor: pointer;
   margin-bottom: 12px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .job-card:hover {
@@ -1484,12 +1505,42 @@ const handleBookAndPayArea = async () => {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
+  .main-content {
+    padding: 0 16px;
+  }
+
+  .content-card {
+    padding: 16px;
+  }
+
+  .accounts-grid,
+  .campus-grid,
+  .facility-grid,
+  .area-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .step-circle {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .step-label {
+    font-size: 12px;
+  }
+
   .nav-menu {
     margin-left: 20px;
   }
 
   .nav-item {
     padding: 6px 12px;
+  }
+
+  .custom-dialog :deep(.el-dialog) {
+    width: 90% !important;
+    max-height: 80vh;
   }
 }
 
@@ -1505,6 +1556,126 @@ const handleBookAndPayArea = async () => {
     margin-left: 0;
     width: 100%;
     justify-content: center;
+  }
+
+  .content-card {
+    padding: 12px;
+  }
+
+  .accounts-grid,
+  .campus-grid,
+  .facility-grid,
+  .area-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .account-card,
+  .campus-card,
+  .facility-card,
+  .area-card {
+    padding: 16px;
+    width: 100%;
+    margin: 0;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .header-actions .el-button {
+    flex: 1;
+  }
+
+  .date-selector {
+    width: 100%;
+  }
+
+  .date-selector :deep(.el-date-picker) {
+    width: 100%;
+  }
+
+  .custom-dialog :deep(.el-dialog) {
+    width: 95% !important;
+    max-height: 85vh;
+  }
+
+  .custom-dialog :deep(.el-dialog__header) {
+    padding: 15px;
+  }
+
+  .custom-dialog :deep(.el-dialog__body) {
+    padding: 10px;
+  }
+
+  .custom-dialog :deep(.el-dialog__footer) {
+    padding: 10px;
+  }
+
+  .timeline-container {
+    max-height: 250px;
+  }
+
+  /* 调整表单项间距 */
+  .el-form-item {
+    margin-bottom: 15px;
+  }
+
+  /* 调整任务详情内容 */
+  .job-info-content {
+    padding: 10px;
+  }
+
+  .info-item {
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .info-item .label {
+    min-width: auto;
+    margin-right: 8px;
+  }
+
+  /* 调整时间线显示 */
+  .timeline-container {
+    max-height: 300px;
+    padding: 0 5px;
+  }
+
+  /* 调整预约信息显示 */
+  .area-info {
+    padding: 10px;
+  }
+
+  .area-info .info-item {
+    margin-bottom: 10px;
+  }
+
+  /* 调整按钮组布局 */
+  .dialog-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dialog-footer .el-button {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  /* 调整数据展示区域 */
+  .timeline-content .data-info {
+    margin-top: 6px;
+    padding: 6px;
+  }
+
+  .timeline-content pre {
+    font-size: 11px;
   }
 }
 
@@ -1652,5 +1823,119 @@ const handleBookAndPayArea = async () => {
 
 .custom-dialog :deep(.el-timeline) {
   padding-left: 16px;
+}
+
+/* 自定义弹窗样式 */
+.custom-dialog :deep(.el-dialog) {
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  /* 设置弹窗宽度为90% */
+}
+
+.custom-dialog :deep(.el-dialog__body) {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .custom-dialog :deep(.el-dialog) {
+    width: 90% !important;
+    max-height: 80vh;
+  }
+
+  .custom-dialog :deep(.el-dialog__body) {
+    padding: 15px;
+  }
+
+  /* 调整表单项间距 */
+  .el-form-item {
+    margin-bottom: 15px;
+  }
+
+  /* 调整任务详情内容 */
+  .job-info-content {
+    padding: 10px;
+  }
+
+  .info-item {
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .info-item .label {
+    min-width: auto;
+    margin-right: 8px;
+  }
+
+  /* 调整时间线显示 */
+  .timeline-container {
+    max-height: 300px;
+    padding: 0 5px;
+  }
+
+  /* 调整预约信息显示 */
+  .area-info {
+    padding: 10px;
+  }
+
+  .area-info .info-item {
+    margin-bottom: 10px;
+  }
+
+  /* 调整按钮组布局 */
+  .dialog-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dialog-footer .el-button {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  /* 调整数据展示区域 */
+  .timeline-content .data-info {
+    margin-top: 6px;
+    padding: 6px;
+  }
+
+  .timeline-content pre {
+    font-size: 11px;
+  }
+}
+
+/* 在较小的手机屏幕上进一步优化 */
+@media (max-width: 480px) {
+  .custom-dialog :deep(.el-dialog) {
+    width: 95% !important;
+    max-height: 85vh;
+  }
+
+  .custom-dialog :deep(.el-dialog__header) {
+    padding: 15px;
+  }
+
+  .custom-dialog :deep(.el-dialog__body) {
+    padding: 10px;
+  }
+
+  .custom-dialog :deep(.el-dialog__footer) {
+    padding: 10px;
+  }
+
+  /* 调整时间线容器高度 */
+  .timeline-container {
+    max-height: 250px;
+  }
 }
 </style>
