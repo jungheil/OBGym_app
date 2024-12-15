@@ -7,21 +7,13 @@
         <span>OBGym 预约系统</span>
       </div>
       <div class="nav-menu">
-        <div
-          class="nav-item"
-          :class="{ active: currentNav === 'booking' }"
-          @click="currentNav = 'booking'"
-        >
+        <div class="nav-item" :class="{ active: currentNav === 'booking' }" @click="currentNav = 'booking'">
           <el-icon>
             <Calendar />
           </el-icon>
           <span>预约</span>
         </div>
-        <div
-          class="nav-item"
-          :class="{ active: currentNav === 'jobs' }"
-          @click="currentNav = 'jobs'"
-        >
+        <div class="nav-item" :class="{ active: currentNav === 'jobs' }" @click="currentNav = 'jobs'">
           <el-icon>
             <List />
           </el-icon>
@@ -56,17 +48,11 @@
             </div>
           </div>
           <div class="progress-steps">
-            <div
-              v-for="(step, index) in steps"
-              :key="index"
-              class="progress-step"
-              :class="{
-                completed: index < currentStep,
-                current: index === currentStep,
-                clickable: index < currentStep,
-              }"
-              @click="index < currentStep && handleStepClick(index)"
-            >
+            <div v-for="(step, index) in steps" :key="index" class="progress-step" :class="{
+              completed: index < currentStep,
+              current: index === currentStep,
+              clickable: index < currentStep,
+            }" @click="index < currentStep && handleStepClick(index)">
               <div class="step-circle">
                 <el-icon v-if="index < currentStep"><Select /></el-icon>
                 <el-icon v-else-if="index === currentStep">
@@ -91,20 +77,20 @@
                 <h2>选择用户</h2>
                 <div class="header-actions">
                   <el-button type="primary" @click="handleAddAccount">
-                    <el-icon> <Plus /> </el-icon>添加用户
+                    <el-icon>
+                      <Plus />
+                    </el-icon>添加用户
                   </el-button>
                   <el-button @click="refreshAccounts">
-                    <el-icon> <Refresh /> </el-icon>刷新
+                    <el-icon>
+                      <Refresh />
+                    </el-icon>刷新
                   </el-button>
                 </div>
               </div>
               <div class="accounts-grid">
-                <div
-                  v-for="account in sortedAccounts"
-                  :key="account.account"
-                  class="account-card"
-                  @click="selectAccount(account)"
-                >
+                <div v-for="account in sortedAccounts" :key="account.account" class="account-card"
+                  @click="selectAccount(account)">
                   <div class="account-icon">
                     <el-icon>
                       <User />
@@ -115,10 +101,7 @@
                   </div>
                   <div class="account-actions">
                     <el-tooltip content="删除账户" placement="top">
-                      <div
-                        class="action-button delete"
-                        @click.stop="handleDeleteAccount(account)"
-                      >
+                      <div class="action-button delete" @click.stop="handleDeleteAccount(account)">
                         <el-icon>
                           <Delete />
                         </el-icon>
@@ -130,21 +113,13 @@
             </div>
 
             <!-- 第二步：选择校区 -->
-            <div
-              v-else-if="currentStep === 1"
-              key="campus"
-              class="card-content"
-            >
+            <div v-else-if="currentStep === 1" key="campus" class="card-content">
               <div class="card-header">
                 <h2>选择校区</h2>
               </div>
               <div class="campus-grid">
-                <div
-                  v-for="campus in sortedCampuses"
-                  :key="campus.code"
-                  class="campus-card"
-                  @click="selectCampus(campus)"
-                >
+                <div v-for="campus in sortedCampuses" :key="campus.code" class="campus-card"
+                  @click="selectCampus(campus)">
                   <div class="campus-icon">
                     <el-icon>
                       <School />
@@ -156,21 +131,13 @@
             </div>
 
             <!-- 第三步：选择场馆 -->
-            <div
-              v-else-if="currentStep === 2"
-              key="facility"
-              class="card-content"
-            >
+            <div v-else-if="currentStep === 2" key="facility" class="card-content">
               <div class="card-header">
                 <h2>选择场馆</h2>
               </div>
               <div class="facility-grid">
-                <div
-                  v-for="facility in sortedFacilities"
-                  :key="facility.serviceid"
-                  class="facility-card"
-                  @click="selectFacility(facility)"
-                >
+                <div v-for="facility in sortedFacilities" :key="facility.serviceid" class="facility-card"
+                  @click="selectFacility(facility)">
                   <div class="facility-icon">
                     <el-icon>
                       <OfficeBuilding />
@@ -187,28 +154,18 @@
                 <h2>选择区域</h2>
                 <div class="header-actions">
                   <div class="date-selector">
-                    <el-date-picker
-                      v-model="selectedDate"
-                      type="date"
-                      :disabled-date="disabledDate"
-                      format="YYYY-MM-DD"
-                      value-format="YYYY-MM-DD"
-                      placeholder="选择日期"
-                      :clearable="false"
-                      @change="handleDateChange"
-                    />
+                    <el-date-picker v-model="selectedDate" type="date" :disabled-date="disabledDate" format="YYYY-MM-DD"
+                      value-format="YYYY-MM-DD" placeholder="选择日��" :clearable="false" @change="handleDateChange" />
                   </div>
                   <el-button @click="refreshArea">
-                    <el-icon> <Refresh /> </el-icon>刷新
+                    <el-icon>
+                      <Refresh />
+                    </el-icon>刷新
                   </el-button>
                 </div>
               </div>
               <div class="areas-container">
-                <div
-                  v-for="group in sortedAreas"
-                  :key="group.timeno"
-                  class="time-group"
-                >
+                <div v-for="group in sortedAreas" :key="group.timeno" class="time-group">
                   <div class="time-header">
                     <el-icon>
                       <Timer />
@@ -216,12 +173,7 @@
                     <span>时段 {{ group.timeno }}</span>
                   </div>
                   <div class="area-grid">
-                    <div
-                      v-for="area in group.areas"
-                      :key="area.areaid"
-                      class="area-card"
-                      @click="showBookDialog(area)"
-                    >
+                    <div v-for="area in group.areas" :key="area.areaid" class="area-card" @click="showBookDialog(area)">
                       <div class="area-icon">
                         <el-icon>
                           <Location />
@@ -244,23 +196,17 @@
             <h2>任务列表</h2>
             <div class="header-actions">
               <el-button @click="refreshJobs">
-                <el-icon> <Refresh /> </el-icon>刷新
+                <el-icon>
+                  <Refresh />
+                </el-icon>刷新
               </el-button>
             </div>
           </div>
           <div class="jobs-list">
             <div v-if="jobs.length === 0" class="empty-jobs">暂无任务</div>
             <div v-else class="job-items">
-              <div
-                v-for="job in paginatedJobs"
-                :key="job.job_id"
-                class="job-card"
-                @click="showJobInfo(job.job_id)"
-              >
-                <div
-                  class="job-icon"
-                  :class="{ 'main-job': job.job_level === 0 }"
-                >
+              <div v-for="job in paginatedJobs" :key="job.job_id" class="job-card" @click="showJobInfo(job.job_id)">
+                <div class="job-icon" :class="{ 'main-job': job.job_level === 0 }">
                   <el-icon>
                     <Timer />
                   </el-icon>
@@ -268,16 +214,12 @@
                 <div class="job-info">
                   <div class="job-header">
                     <div class="job-description">
-                      <el-tag
-                        size="small"
-                        class="job-type-tag"
-                        :type="getJobTypeTagType(job.job_level)"
-                      >
+                      <el-tag size="small" class="job-type-tag" :type="getJobTypeTagType(job.job_level)">
                         {{ getJobTypeText(job.job_type) }}
                       </el-tag>
                       <span class="description-text">{{
                         job.description
-                      }}</span>
+                        }}</span>
                     </div>
                     <el-tag :type="getStatusType(job.job_status)" size="small">
                       {{ getStatusText(job.job_status) }}
@@ -294,13 +236,8 @@
 
             <!-- 分页器 -->
             <div class="pagination-container">
-              <el-pagination
-                v-model:current-page="currentPage"
-                :page-size="pageSize"
-                :total="jobs.length"
-                layout="prev, pager, next"
-                @current-change="handlePageChange"
-              />
+              <el-pagination v-model:current-page="currentPage" :page-size="pageSize" :total="jobs.length"
+                layout="prev, pager, next" @current-change="handlePageChange" />
             </div>
           </div>
         </div>
@@ -308,35 +245,15 @@
     </div>
 
     <!-- 添加用户对话框 -->
-    <el-dialog
-      v-model="addAccountDialogVisible"
-      title="添加用户"
-      width="400px"
-      :close-on-click-modal="false"
-      class="custom-dialog"
-      @open="handleDialogOpen"
-    >
-      <el-form
-        :model="newAccount"
-        label-width="80px"
-        @submit.prevent="confirmAddAccount"
-      >
+    <el-dialog v-model="addAccountDialogVisible" title="添加用户" width="400px" :close-on-click-modal="false"
+      class="custom-dialog" @open="handleDialogOpen">
+      <el-form :model="newAccount" label-width="80px" @submit.prevent="confirmAddAccount">
         <el-form-item label="账号">
-          <el-input
-            v-model="newAccount.account"
-            placeholder="请输入账号"
-            ref="accountInput"
-            @keyup.enter="focusPassword"
-          />
+          <el-input v-model="newAccount.account" placeholder="请输入账号" ref="accountInput" @keyup.enter="focusPassword" />
         </el-form-item>
         <el-form-item label="密码">
-          <el-input
-            v-model="newAccount.password"
-            type="password"
-            placeholder="请输入密码"
-            ref="passwordInput"
-            @keyup.enter="confirmAddAccount"
-          />
+          <el-input v-model="newAccount.password" type="password" placeholder="请输入密码" ref="passwordInput"
+            @keyup.enter="confirmAddAccount" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -348,14 +265,8 @@
     </el-dialog>
 
     <!-- 预约弹窗 -->
-    <el-dialog
-      v-model="bookDialogVisible"
-      title="场地预约"
-      width="400px"
-      :close-on-click-modal="false"
-      class="custom-dialog"
-      @keyup.enter="handleBookArea"
-    >
+    <el-dialog v-model="bookDialogVisible" title="场地预约" width="400px" :close-on-click-modal="false"
+      class="custom-dialog" @keyup.enter="handleBookArea">
       <div class="area-info">
         <div class="info-item">
           <span class="label">场地名称：</span>
@@ -374,19 +285,14 @@
         <span class="dialog-footer">
           <el-button @click="bookDialogVisible = false">取消</el-button>
           <el-button type="primary" @click="handleBookArea">仅预约</el-button>
+          <el-button type="danger" @click="handleBookAndPayArea">经费预约</el-button>
         </span>
       </template>
     </el-dialog>
 
     <!-- 添加任务详情弹窗 -->
-    <el-dialog
-      v-model="jobInfoDialogVisible"
-      title="任务详情"
-      width="500px"
-      :close-on-click-modal="false"
-      class="custom-dialog"
-      @keyup.enter="jobInfoDialogVisible = false"
-    >
+    <el-dialog v-model="jobInfoDialogVisible" title="任务详情" width="500px" :close-on-click-modal="false"
+      class="custom-dialog" @keyup.enter="jobInfoDialogVisible = false">
       <div v-if="selectedJobInfo" class="job-info-content">
         <div class="info-item">
           <span class="label">任务类型：</span>
@@ -434,12 +340,8 @@
           <h3>执行记录</h3>
           <div class="timeline-container">
             <el-timeline>
-              <el-timeline-item
-                v-for="result in sortedResults"
-                :key="result.created_at"
-                :type="result.success ? 'success' : 'danger'"
-                :timestamp="result.created_at"
-              >
+              <el-timeline-item v-for="result in sortedResults" :key="result.created_at"
+                :type="result.success ? 'success' : 'danger'" :timestamp="result.created_at">
                 <div class="timeline-content">
                   <div class="message">{{ result.message || "执行完成" }}</div>
                   <div v-if="shouldShowData(result)" class="data-info">
@@ -453,11 +355,7 @@
       </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button
-            type="danger"
-            @click="handleRemoveJob"
-            :disabled="selectedJobInfo?.job_level === 0"
-          >
+          <el-button type="danger" @click="handleRemoveJob" :disabled="selectedJobInfo?.job_level === 0">
             删除任务
           </el-button>
           <el-button @click="jobInfoDialogVisible = false">关闭</el-button>
@@ -511,7 +409,7 @@ const pageSize = ref(10);
 const jobInfoDialogVisible = ref(false);
 const selectedJobInfo = ref<JobInfo | null>(null);
 
-// 修改 ref 的类型定义
+// 修改 ref 的类型定��
 const accountInput = ref<any>(null);
 const passwordInput = ref<any>(null);
 
@@ -535,6 +433,7 @@ const refreshAccounts = async () => {
 
 const selectAccount = async (account: Account) => {
   try {
+    store.loading = true; // 开始加载
     // 先尝试刷新账户状态
     const response = await fetch(`/api/accounts/${account.account}/renew`, {
       method: "POST",
@@ -557,6 +456,8 @@ const selectAccount = async (account: Account) => {
     ElMessage.error(
       error instanceof Error ? error.message : "账户状态更新失败"
     );
+  } finally {
+    store.loading = false; // 结束加载
   }
 };
 
@@ -595,7 +496,7 @@ const handleDateChange = async () => {
 };
 
 const handleDialogOpen = () => {
-  // 使用较短的延时确保 DOM 已完全渲染
+  // 使用较短延时确保 DOM 已完全渲染
   setTimeout(() => {
     accountInput.value?.focus();
   }, 100);
@@ -940,6 +841,8 @@ const getJobTypeText = (type: number) => {
       return "账户更新";
     case 2:
       return "场地预约";
+    case 3:
+      return "经费预约";
     default:
       return "未知";
   }
@@ -986,6 +889,42 @@ const getJobTypeTagType = (level: number) => {
       return "info";
   }
 };
+
+const handleBookAndPayArea = async () => {
+  if (!selectedArea.value || !store.selectedAccount) {
+    ElMessage.warning("请选择场地和账号");
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/area/book_and_pay`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sname: selectedArea.value.sname,
+        sdate: selectedArea.value.sdate,
+        timeno: selectedArea.value.timeno,
+        serviceid: selectedArea.value.serviceid,
+        areaid: selectedArea.value.areaid,
+        stockid: selectedArea.value.stockid,
+        account: store.selectedAccount,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+
+    ElMessage.success("预约任务创建成功");
+    bookDialogVisible.value = false;
+    currentNav.value = "jobs"; // 跳转到任务页面
+    await refreshJobs(); // 刷新任务列表
+  } catch (error) {
+    ElMessage.error(error instanceof Error ? error.message : "预约失败");
+  }
+};
 </script>
 <style scoped>
 .app-container {
@@ -1015,11 +954,9 @@ const getJobTypeTagType = (level: number) => {
 .logo span {
   font-size: 20px;
   font-weight: bold;
-  background: linear-gradient(
-    45deg,
-    var(--el-color-primary),
-    var(--el-color-success)
-  );
+  background: linear-gradient(45deg,
+      var(--el-color-primary),
+      var(--el-color-success));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -1298,6 +1235,7 @@ const getJobTypeTagType = (level: number) => {
 }
 
 @media (max-width: 480px) {
+
   .accounts-grid,
   .campus-grid,
   .facility-grid,

@@ -203,6 +203,23 @@ class BookAreaRequest(BaseModel):
     account: str
 
 
+@app.post("/area/book_and_pay")
+async def book_and_pay_area(request: BookAreaRequest):
+    """创建场地预约并付款任务"""
+    try:
+        area = GymArea(
+            sname=request.sname,
+            sdate=request.sdate,
+            timeno=request.timeno,
+            serviceid=request.serviceid,
+            areaid=request.areaid,
+            stockid=request.stockid,
+        )
+        return api.book_and_pay(area, request.account)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/area/book")
 async def only_book_area(request: BookAreaRequest):
     """创建场地预约任务"""
